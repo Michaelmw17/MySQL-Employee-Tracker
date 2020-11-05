@@ -1,6 +1,30 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 
+const logo = require('asciiart-logo');
+const config = require('./package.json');
+console.log(logo(config).render());
+
+const longText = '';
+ 
+console.log(
+    logo({
+        name: 'Employee generator',
+        font: 'Speed',
+        lineChars: 10,
+        padding: 2,
+        margin: 3,
+        borderColor: 'grey',
+        logoColor: 'bold-green',
+        textColor: 'green',
+    })
+    .emptyLine()
+    .right('version 3.7.123')
+    .emptyLine()
+    .center(longText)
+    .render()
+);
+
 const connection = mysql.createConnection({
     multipleStatements: true, 
     host: "localhost",
@@ -22,7 +46,7 @@ const connection = mysql.createConnection({
     start();
   });
 
-  function start() {
+   const start = () => {
     inquirer
       .prompt({
         name: "action",
@@ -39,7 +63,7 @@ const connection = mysql.createConnection({
           "Exit"
         ]
       })
-    .then(function(answer) {
+    .then((answer) => {
         if (answer.action === 'View all departments') {
             viewDepartments();
         } else if (answer.action === 'View all roles') {
@@ -60,7 +84,7 @@ const connection = mysql.createConnection({
         }
     })
     }
-      function viewDepartments() {
+        const viewDepartments = () => {
           const  query = "SELECT * FROM department";
         connection.query(query, function(err, res){
             console.log(`DEPARTMENTS:`)
@@ -71,9 +95,9 @@ const connection = mysql.createConnection({
         });
     };
 
-      function viewRoles () {
+        const viewRoles = () => {
         const  query = "SELECT * FROM role";
-        connection.query(query, function(err, res) {
+        connection.query(query, (err, res) => {
             console.log(`ROLES:`)
         res.forEach(role => {
             console.log(`ID: ${role.id} | Title: ${role.title} | Salary: ${role.salary} | Department ID: ${role.department_id}`);
@@ -82,40 +106,168 @@ const connection = mysql.createConnection({
         });
     };
 
-function viewEmployees() {
+    const viewEmployees = () => {
     const query = "SELECT * FROM employee";
-        connection.query(query, function(err, res) {
+        connection.query(query, (err, res) => {
             console.log(`EMPLOYEES:`)
         res.forEach(employee => {
             console.log(`ID: ${employee.id} | Name: ${employee.first_name} ${employee.last_name} | Role ID: ${employee.role_id} | Manager ID: ${employee.manager_id}`);
-        })
+        });
         start();
         });
 };
 
-function addDepartment() {
+    const addDepartment = () => {
     inquirer
     .prompt({
         name: "department",
         type: "input",
         message: "What is the name of the new department?",
-      })
-    .then(function(answer) {
+    })
+    .then((answer)=> {
     const query = "INSERT INTO department (name) VALUES ( ? )";
     connection.query(query, answer.department,  (err, res) => {
         console.log(`You have added this department: ${(answer.department).toUpperCase()}.`)
-    })
+    });
     viewDepartments();
-    })
-}
+    });
+};
 
-// function addRole() {
+    const addRole = () => {
+    connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw (err);
+    inquirer
+        .prompt([{
+            name: "title",
+            type: "input",
+            message: "What is the title of the new role?",
+        }, 
+        {
+            name: "salary",
+            type: "input",
+            message: "What is the salary of the new role?",
+        },
+        {
+            name: "departmentName",
+            type: "list",
+// is there a way to make the options here the results of a query that selects all departments?`
+            message: "Choose department does this role falls under?",
+            choices: () => {
+                const choicesArray = [];
+                res.forEach(res => {
+                    choicesArray.push(
+                        res.name
+                    );
+                })
+                return choicesArray;
+            }
+        }
+        ])
+// To get the id here, i need a way to grab it from the departments table 
+        .then((answer) => {
+        const department = answer.departmentName;
+        connection.query('SELECT * FROM DEPARTMENT', (err, res) => {
+        
+            if (err) throw (err);
+            let filteredDept = res.filter((res) => {
+            return res.name == department;
+        }
+        )
+        let id = filteredDept[0].id;
+        let query = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)";
+        let values = [answer.title, parseInt(answer.salary), id]
+        console.log(values);
+        connection.query(query, values,
+            (err, res, fields) => {
+            console.log(`You have added this role: ${(values[0]).toUpperCase()}.`)
+        });
+            viewRoles();
+            });
+        });
+    });
+};
 
-// }
-
-// async function addEmployee() {
-
-// }
+const addEmployee = () => {
+    connection.query('SELECT * FROM role', function(err, result) {
+        if (err) throw (err);
+    inquirer
+        .prompt([{
+            name: "firstName",
+            type: "input",
+            message: "What is the employee's first name?",
+        }, 
+        {
+            name: "lastName",
+            type: "input",
+            message: "What is the employee's last name?",
+        },
+        {
+            name: "roleName",
+            type: "list",
+// is there a way to make the options here the results of a query that selects all departments?`
+            message: "What role does the employee have?",
+            choices: () => {
+                rolesArray = [];
+                result.forEach(result => {
+                    rolesArray.push(
+                        result.title
+                    );
+                })
+                return rolesArray;
+            }
+        }
+        ]) 
+// in order to get the id here, i need a way to grab it from the departments table 
+        .then((answer)=> {
+        console.log(answer);
+        const role = answer.roleName;
+        connection.query('SELECT * FROM role', function(err, res) {
+            if (err) throw (err);
+            let filteredRole = res.filter(function(res) {
+                return res.title == role;
+            })
+        let roleId = filteredRole[0].id;
+        connection.query("SELECT * FROM employee", function(err, res) {
+                inquirer
+                .prompt ([
+                    {
+                        name: "manager",
+                        type: "list",
+                        message: "Who is your manager?",
+                        choices: function() {
+                            managersArray = []
+                            res.forEach(res => {
+                                managersArray.push(
+                                    res.last_name)
+                                
+                            })
+                            return managersArray;
+                        }
+                    }
+                ]).then(function(managerAnswer) {
+                    const manager = managerAnswer.manager;
+                connection.query('SELECT * FROM employee', function(err, res) {
+                if (err) throw (err);
+                let filteredManager = res.filter(function(res) {
+                return res.last_name == manager;
+            })
+            let managerId = filteredManager[0].id;
+                    console.log(managerAnswer);
+                    let query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+                    let values = [answer.firstName, answer.lastName, roleId, managerId]
+                    console.log(values);
+                    connection.query(query, values,
+                        function(err, res, fields) {
+                        console.log(`You have added this employee: ${(values[0]).toUpperCase()}.`)
+                        });
+                        viewEmployees();
+                        });
+                    });
+                });
+            });
+        });
+    });
+};
 
 // function updateRole {
 
