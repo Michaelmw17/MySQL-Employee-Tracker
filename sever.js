@@ -4,21 +4,23 @@ const inquirer = require('inquirer');
 var connection = mysql.createConnection({
     multipleStatements: true, 
     host: "localhost",
-   /*port*/
-    port: 3306,
-   /*user name*/
-    user: "root",
 
-    /*password*/
+    // Port
+    port: 3306,
+  
+    // Username
+    user: "root",
+  
+    // Password
     password: "Mw080398!",
     database: "employee_db"
   });
 
-connection.connect(function(err){
+  
+  connection.connect(function(err) {
     if (err) throw err;
     start();
-
-});
+  });
 
   function start() {
     inquirer
@@ -37,35 +39,58 @@ connection.connect(function(err){
           "Exit"
         ]
       })
-      .then(function(answer){
-         
-      })
-
+    .then(function(answer) {
+        if (answer.action === 'View all departments') {
+            viewDepartments();
+        } else if (answer.action === 'View all roles') {
+            viewRoles();
+        } else if (answer.action === 'View all employees') {
+            viewEmployees();
+        } else if (answer.action === 'Add a department') {
+            addDepartment();
+        } else if (answer.action === 'Add a role') {
+            addRole();
+        } else if (answer.action === 'Add an employee') {
+            addEmployee();
+        } else if (answer.action === 'Update employee role') {
+            updateRole();
+        }
+        else if (answer.action === 'Exit') {
+            connection.end();
+        }
+    })
+    }
       function viewDepartments() {
+          var query = "SELECT * FROM department";
+        connection.query(query, function(err, res){
+            console.log(`DEPARTMENTS:`)
+        res.forEach(department => {
+            console.log(`ID: ${department.id} | Name: ${department.name}`)
+        })
+        start();
+        });
+    };
 
-      }
+//       function viewRoles () {
 
-      function viewRoles () {
+//       }
 
-      }
+// function viewEmployees() {
 
-function viewEmployees() {
+// }
 
-}
+// function addDepartment() {
 
-function addDepartment() {
+// }
 
-}
+// function addRole() {
 
-function addRole() {
+// }
 
-}
+// async function addEmployee() {
 
-async function addEmployee() {
+// }
 
-}
+// function updateRole {
 
-function updateRole {
-
-}
-
+// }
