@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
     multipleStatements: true, 
     host: "localhost",
 
@@ -61,7 +61,7 @@ var connection = mysql.createConnection({
     })
     }
       function viewDepartments() {
-          var query = "SELECT * FROM department";
+          const  query = "SELECT * FROM department";
         connection.query(query, function(err, res){
             console.log(`DEPARTMENTS:`)
         res.forEach(department => {
@@ -71,17 +71,43 @@ var connection = mysql.createConnection({
         });
     };
 
-//       function viewRoles () {
+      function viewRoles () {
+        const  query = "SELECT * FROM role";
+        connection.query(query, function(err, res) {
+            console.log(`ROLES:`)
+        res.forEach(role => {
+            console.log(`ID: ${role.id} | Title: ${role.title} | Salary: ${role.salary} | Department ID: ${role.department_id}`);
+        })
+        start();
+        });
+    };
 
-//       }
+function viewEmployees() {
+    const query = "SELECT * FROM employee";
+        connection.query(query, function(err, res) {
+            console.log(`EMPLOYEES:`)
+        res.forEach(employee => {
+            console.log(`ID: ${employee.id} | Name: ${employee.first_name} ${employee.last_name} | Role ID: ${employee.role_id} | Manager ID: ${employee.manager_id}`);
+        })
+        start();
+        });
+};
 
-// function viewEmployees() {
-
-// }
-
-// function addDepartment() {
-
-// }
+function addDepartment() {
+    inquirer
+    .prompt({
+        name: "department",
+        type: "input",
+        message: "What is the name of the new department?",
+      })
+    .then(function(answer) {
+    const query = "INSERT INTO department (name) VALUES ( ? )";
+    connection.query(query, answer.department,  (err, res) => {
+        console.log(`You have added this department: ${(answer.department).toUpperCase()}.`)
+    })
+    viewDepartments();
+    })
+}
 
 // function addRole() {
 
