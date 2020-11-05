@@ -10,13 +10,12 @@ var connection = mysql.createConnection({
     user: "root",
 
     /*password*/
-
     password: "Mw080398!",
     database: "employee_db"
   });
 
-connection.connet(function(err){
-    if (err throw) err;
+connection.connect(function(err){
+    if (err) throw err;
     start();
 
 });
