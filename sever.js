@@ -270,7 +270,7 @@ const addEmployee = () => {
 };
 
     const updateRole= () => {
-    connection.query('SELECT * FROM employee', function(err, result) {
+    connection.query('SELECT * FROM employee', (err, result) => {
         if (err) throw (err);
         inquirer
         .prompt([
@@ -278,7 +278,7 @@ const addEmployee = () => {
             name: "employeeName",
             type: "list",
             message: "Which employee's role is changing?",
-            choices: function() {
+            choices: () => {
                 employeeArray = [];
                 result.forEach(result => {
                     employeeArray.push(
@@ -290,17 +290,17 @@ const addEmployee = () => {
         }
         ]) 
 //to retrieve the id here,  retrieve it from the departments table 
-        .then(function(answer) {
+        .then((answer) => {
         console.log(answer);
         const name = answer.employeeName;
-        connection.query("SELECT * FROM role", function(err, res) {
+        connection.query("SELECT * FROM role", (err, res) => {
                 inquirer
                 .prompt ([
                     {
                         name: "role",
                         type: "list",
                         message: "What is their new role?",
-                        choices: function() {
+                        choices: () => {
                             rolesArray = [];
                             res.forEach(res => {
                                 rolesArray.push(
@@ -310,17 +310,17 @@ const addEmployee = () => {
                             return rolesArray;
                         }
                     }
-                ]).then(function(rolesAnswer) {
+                ]).then((rolesAnswer) => {
                     const role = rolesAnswer.role;
                     console.log(rolesAnswer.role);
-                connection.query('SELECT * FROM role WHERE title = ?', [role], function(err, res) {
+                connection.query('SELECT * FROM role WHERE title = ?', [role], (err, res) => {
                 if (err) throw (err);
                     let roleId = res[0].id;
                     let query = "UPDATE employee SET role_id ? WHERE last_name ?";
                     let values = [roleId, name]
                     console.log(values);
                     connection.query(query, values,
-                        function(err, res, fields) {
+                        (err, res, fields) => {
                         console.log(`You have updated ${name}'s role to ${role}.`)
                         });
                         viewEmployees();
