@@ -41,7 +41,7 @@ const connection = mysql.createConnection({
   });
 
   
-  connection.connect(function(err) {
+  connection.connect((err) => {
     if (err) throw err;
     start();
   });
@@ -86,7 +86,7 @@ const connection = mysql.createConnection({
     }
         const viewDepartments = () => {
           const  query = "SELECT * FROM department";
-        connection.query(query, function(err, res){
+        connection.query(query, (err, res) => {
             console.log(`DEPARTMENTS:`)
         res.forEach(department => {
             console.log(`ID: ${department.id} | Name: ${department.name}`)
@@ -188,7 +188,7 @@ const connection = mysql.createConnection({
 };
 
 const addEmployee = () => {
-    connection.query('SELECT * FROM role', function(err, result) {
+    connection.query('SELECT * FROM role', (err, result) => {
         if (err) throw (err);
     inquirer
         .prompt([{
@@ -221,20 +221,20 @@ const addEmployee = () => {
         .then((answer)=> {
         console.log(answer);
         const role = answer.roleName;
-        connection.query('SELECT * FROM role', function(err, res) {
+        connection.query('SELECT * FROM role', (err, res) => {
             if (err) throw (err);
-            let filteredRole = res.filter(function(res) {
+            let filteredRole = res.filter((res) => {
                 return res.title == role;
             })
         let roleId = filteredRole[0].id;
-        connection.query("SELECT * FROM employee", function(err, res) {
+        connection.query("SELECT * FROM employee",  (err, res) => {
                 inquirer
                 .prompt ([
                     {
                         name: "manager",
                         type: "list",
                         message: "Who is your manager?",
-                        choices: function() {
+                        choices: () => {
                             managersArray = []
                             res.forEach(res => {
                                 managersArray.push(
@@ -244,11 +244,11 @@ const addEmployee = () => {
                             return managersArray;
                         }
                     }
-                ]).then(function(managerAnswer) {
+                ]).then((managerAnswer) => {
                     const manager = managerAnswer.manager;
-                connection.query('SELECT * FROM employee', function(err, res) {
+                connection.query('SELECT * FROM employee', (err, res) =>{
                 if (err) throw (err);
-                let filteredManager = res.filter(function(res) {
+                let filteredManager = res.filter((res) => {
                 return res.last_name == manager;
             })
             let managerId = filteredManager[0].id;
@@ -257,7 +257,7 @@ const addEmployee = () => {
                     let values = [answer.firstName, answer.lastName, roleId, managerId]
                     console.log(values);
                     connection.query(query, values,
-                        function(err, res, fields) {
+                        (err, res, fields) => {
                         console.log(`You have added this employee: ${(values[0]).toUpperCase()}.`)
                         });
                         viewEmployees();
