@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Michaelmw17/Unit-12-MySQL-Employee-Tracker#readme",
   "dependencies": {
     "asciiart-logo": "^0.2.6",
+    "console.table": "^0.10.0",
     "express": "^4.17.1",
     "inquirer": "^7.3.3",
     "my": "^0.3.3",

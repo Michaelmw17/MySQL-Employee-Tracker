@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const cTable = require('console.table');
 
 const logo = require('asciiart-logo');
 const config = require('./package.json');
@@ -9,7 +10,7 @@ const longText = '';
  
 console.log(
     logo({
-        name: 'Employee generator',
+        name: 'Add  a department, role or an employee.',
         font: 'Speed',
         lineChars: 10,
         padding: 2,
@@ -78,6 +79,8 @@ const connection = mysql.createConnection({
             addEmployee();
         } else if (answer.action === 'Update employee role') {
             updateRole();
+        } else if (answer.action === 'Remove  employee role') {
+            removeRole();
         }
         else if (answer.action === 'Exit') {
             connection.end();
@@ -150,7 +153,6 @@ const connection = mysql.createConnection({
         {
             name: "departmentName",
             type: "list",
-// is there a way to make the options here the results of a query that selects all departments?`
             message: "Choose department does this role falls under?",
             choices: () => {
                 const choicesArray = [];
@@ -204,7 +206,6 @@ const addEmployee = () => {
         {
             name: "roleName",
             type: "list",
-// is there a way to make the options here the results of a query that selects all departments?`
             message: "What role does the employee have?",
             choices: () => {
                 rolesArray = [];
@@ -239,7 +240,6 @@ const addEmployee = () => {
                             res.forEach(res => {
                                 managersArray.push(
                                     res.last_name)
-                                
                             })
                             return managersArray;
                         }
@@ -330,4 +330,3 @@ const addEmployee = () => {
             });
         });
     };
-
