@@ -59,6 +59,20 @@ I want to be able to view and manage the departments, roles, and employees in my
 So that I can organize and plan my business
 ```
 
+##  Requirements
+
+* Functional application.
+
+* GitHub repository with a unique name and a README describing the project.
+
+* The command-line application should allow users to:
+
+  * Add departments, roles, employees
+
+  * View departments, roles, employees
+
+  * Update employee roles
+
 ### Resources
 
 * Use the [MySQL](https://www.npmjs.com/package/mysql) NPM package to connect to your MySQL database and perform queries.
@@ -76,17 +90,3 @@ So that I can organize and plan my business
 * Review the week's activities for a refresher on MySQL.
 
 * Check out [SQL Bolt](https://sqlbolt.com/) for some extra MySQL help.
-
-##  Requirements
-
-* Functional application.
-
-* GitHub repository with a unique name and a README describing the project.
-
-* The command-line application should allow users to:
-
-  * Add departments, roles, employees
-
-  * View departments, roles, employees
-
-  * Update employee roles
