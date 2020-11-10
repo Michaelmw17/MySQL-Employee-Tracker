@@ -37,7 +37,7 @@ const connection = mysql.createConnection({
     user: "root",
   
     // Password
-    password: "",
+    password: "Mw080398!",
     database: "employee_db"
   });
 
@@ -61,6 +61,9 @@ const connection = mysql.createConnection({
           "Add a role",
           "Add an employee",
           "Update employee role",
+        //   'Remove Employee',
+        //   'Remove Role',
+        //   'Remove Department',
           "Exit"
         ]
       })
@@ -79,9 +82,16 @@ const connection = mysql.createConnection({
             addEmployee();
         } else if (answer.action === 'Update employee role') {
             updateRole();
-        } else if (answer.action === 'Remove  employee role') {
-            removeRole();
         }
+        // else if (answer.action === 'Remove  employee role') {
+        //     removeRole();
+        // } else if (answer.action === 'Remove Department') {
+        //     removeDepartment();
+        // } else if (answer.action === 'Remove Employee') {
+        //     removeEmployee();
+        // } else if (answer.action === 'Remove Role') {
+        //     removeRole();
+        // }
         else if (answer.action === 'Exit') {
             connection.end();
         }
@@ -330,3 +340,41 @@ const addEmployee = () => {
             });
         });
     };
+
+// Delete a Department
+// const removeDepartment = () => {
+//     let sql =   `SELECT * FROM department`;
+//     connection.promise().query(sql, (error, response) => {
+//         if (error) throw error;
+//         let departmentNamesArray = [];
+//         response.forEach((department) => {departmentNamesArray.push(department.departmentName);});
+        
+//         inquirer
+//         .prompt([
+//             {
+//             name: 'chosenDept',
+//             type: 'list',
+//             message: 'Which department would you like to remove?',
+//             choices: departmentNamesArray
+//             }
+//         ])
+//         .then((answer) => {
+//                 let department;
+
+//             response.forEach((department) => {
+//             if (answer.chosenDept === department.department_name) {
+//                 department = department.id;
+//                 }
+//                 });
+
+//             let sql =     `DELETE FROM department WHERE department.id = ?`;
+//             connection.promise().query(sql, [department], (error) => {
+//             if (error) throw error;
+//             console.log(`====================================================================================`);
+//             console.log(`Department Successfully Removed`);
+//             console.log(`====================================================================================`);
+//             viewDepartments();
+//             });
+//         });
+//     });
+// };
