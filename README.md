@@ -8,7 +8,7 @@ As a developer we are often tasked with creating interfaces that make it easy fo
 
 ![Employee Tracker](./Assets/img/ezgif.com-gif-maker.gif) 
 
-Or the full video is [here](./Assets/img/Untitled.mov)
+Or the full video is [here](./Assets/img/screenrecord.mov)
 
 
 ## Instructions
