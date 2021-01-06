@@ -6,7 +6,12 @@
 
 ## Description
 
-As a developer we are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. `Content Management Systems`. This homework assignment, the challenge is to architect and build a solution for managing a company's employees using node, inquirer, [ASCII-art Logo](https://www.npmjs.com/package/asciiart-logo) and MySQL
+As a developer we are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. `Content Management Systems`. This homework assignment, the challenge is to architect and build a solution for managing a company's employees using node, inquirer, [ASCII-art Logo](https://www.npmjs.com/package/asciiart-logo) and MySQL.
+```
+As a business owner
+I want to be able to view and manage the departments, roles, and employees in my company
+So that I can organize and plan my business
+```
 
 ![Employee Tracker](./Assets/img/ezgif.com-gif-maker.gif) 
 
@@ -58,13 +63,6 @@ Build a command-line application that at a minimum allows the user to:
 
   * Update employee roles
 
-We can frame this challenge as follows:
-
-```
-As a business owner
-I want to be able to view and manage the departments, roles, and employees in my company
-So that I can organize and plan my business
-```
 
 ##  Requirements
 
@@ -95,3 +93,11 @@ So that I can organize and plan my business
 * Focus on getting the basic functionality completed before working on more advanced features.
 
 * Check out [SQL Bolt](https://sqlbolt.com/) for some extra MySQL help.
+
+## Questions
+_Michael Watt_
+
+- [Github!](https://github.com/Michaelmw17)
+- [LinkedIn!](https://www.linkedin.com/in/michael-watt-6a76961b3/)
+- [Portfolio!](http://michaelmw17.github.io/)
+- Email:(michaelmw17@outlook.com)
